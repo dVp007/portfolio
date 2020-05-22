@@ -43,6 +43,10 @@ var app = (function () {
     function space() {
         return text(' ');
     }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
     function attr(node, attribute, value) {
         if (value == null)
             node.removeAttribute(attribute);
@@ -261,6 +265,19 @@ var app = (function () {
         dispatch_dev("SvelteDOMRemove", { node });
         detach(node);
     }
+    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+        const modifiers = options === true ? ["capture"] : options ? Array.from(Object.keys(options)) : [];
+        if (has_prevent_default)
+            modifiers.push('preventDefault');
+        if (has_stop_propagation)
+            modifiers.push('stopPropagation');
+        dispatch_dev("SvelteDOMAddEventListener", { node, event, handler, modifiers });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev("SvelteDOMRemoveEventListener", { node, event, handler, modifiers });
+            dispose();
+        };
+    }
     function attr_dev(node, attribute, value) {
         attr(node, attribute, value);
         if (value == null)
@@ -308,18 +325,18 @@ var app = (function () {
     	let li2;
     	let b2;
     	let t5;
-    	let img;
-    	let img_src_value;
-    	let t6;
     	let section0;
     	let div4;
     	let div3;
     	let div1;
     	let h10;
-    	let t8;
+    	let t7;
     	let h11;
-    	let t10;
+    	let t9;
     	let hr;
+    	let t10;
+    	let img;
+    	let img_src_value;
     	let t11;
     	let div2;
     	let h50;
@@ -346,6 +363,7 @@ var app = (function () {
     	let h32;
     	let t29;
     	let p2;
+    	let dispose;
 
     	const block = {
     		c: function create() {
@@ -363,19 +381,19 @@ var app = (function () {
     			b2 = element("b");
     			b2.textContent = "Work";
     			t5 = space();
-    			img = element("img");
-    			t6 = space();
     			section0 = element("section");
     			div4 = element("div");
     			div3 = element("div");
     			div1 = element("div");
     			h10 = element("h1");
     			h10.textContent = "Dharmil";
-    			t8 = space();
+    			t7 = space();
     			h11 = element("h1");
     			h11.textContent = "Parekh";
-    			t10 = space();
+    			t9 = space();
     			hr = element("hr");
+    			t10 = space();
+    			img = element("img");
     			t11 = space();
     			div2 = element("div");
     			h50 = element("h5");
@@ -385,7 +403,7 @@ var app = (function () {
     			h30.textContent = "Full Stack Developer based in India";
     			t15 = space();
     			p0 = element("p");
-    			p0.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do\n          eiusmod tempor incididunt ut labore et";
+    			p0.textContent = "Innovative optimized solution seeker. Excited to be at the development phase of my new career as a web developer. I am ambitious, adventurous and assiduos.";
     			t17 = space();
     			a = element("a");
     			a.textContent = "For More Info";
@@ -412,68 +430,77 @@ var app = (function () {
     			t29 = space();
     			p2 = element("p");
     			p2.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do\n            eiusmod tempor incididunt ut labore et";
-    			add_location(b0, file, 88, 6, 1465);
-    			attr_dev(li0, "class", "active svelte-1zhfcn");
-    			add_location(li0, file, 87, 4, 1439);
-    			add_location(b1, file, 91, 6, 1506);
-    			attr_dev(li1, "class", "svelte-1zhfcn");
-    			add_location(li1, file, 90, 4, 1495);
-    			add_location(b2, file, 94, 6, 1544);
-    			attr_dev(li2, "class", "svelte-1zhfcn");
-    			add_location(li2, file, 93, 4, 1533);
-    			attr_dev(ul, "class", "navbar svelte-1zhfcn");
-    			add_location(ul, file, 86, 2, 1415);
-    			attr_dev(div0, "class", "container svelte-1zhfcn");
-    			add_location(div0, file, 85, 0, 1389);
+    			add_location(b0, file, 115, 6, 1979);
+    			attr_dev(li0, "class", "active svelte-asupnh");
+    			add_location(li0, file, 114, 4, 1929);
+    			add_location(b1, file, 118, 6, 2045);
+    			attr_dev(li1, "class", "svelte-asupnh");
+    			add_location(li1, file, 117, 4, 2009);
+    			add_location(b2, file, 121, 6, 2107);
+    			attr_dev(li2, "class", "svelte-asupnh");
+    			add_location(li2, file, 120, 4, 2072);
+    			attr_dev(ul, "class", "navbar svelte-asupnh");
+    			add_location(ul, file, 113, 2, 1905);
+    			attr_dev(div0, "class", "container svelte-asupnh");
+    			add_location(div0, file, 112, 0, 1879);
+    			attr_dev(h10, "class", "svelte-asupnh");
+    			add_location(h10, file, 129, 8, 2248);
+    			attr_dev(h11, "class", "svelte-asupnh");
+    			add_location(h11, file, 130, 8, 2273);
+    			attr_dev(hr, "class", "svelte-asupnh");
+    			add_location(hr, file, 131, 2, 2291);
+    			attr_dev(div1, "class", "name svelte-asupnh");
+    			add_location(div1, file, 128, 6, 2221);
     			if (img.src !== (img_src_value = "./profpic.jpg")) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "width", "400px");
-    			attr_dev(img, "class", "svelte-1zhfcn");
-    			add_location(img, file, 98, 0, 1581);
-    			attr_dev(h10, "class", "svelte-1zhfcn");
-    			add_location(h10, file, 103, 8, 1725);
-    			attr_dev(h11, "class", "svelte-1zhfcn");
-    			add_location(h11, file, 104, 8, 1750);
-    			attr_dev(hr, "class", "svelte-1zhfcn");
-    			add_location(hr, file, 105, 2, 1768);
-    			attr_dev(div1, "class", "name svelte-1zhfcn");
-    			add_location(div1, file, 102, 6, 1698);
-    			add_location(h50, file, 108, 8, 1819);
-    			add_location(h30, file, 109, 8, 1850);
-    			add_location(p0, file, 110, 8, 1903);
+    			attr_dev(img, "width", "350px");
+    			attr_dev(img, "class", "svelte-asupnh");
+    			add_location(img, file, 133, 6, 2315);
+    			attr_dev(h50, "class", "svelte-asupnh");
+    			add_location(h50, file, 135, 8, 2388);
+    			attr_dev(h30, "class", "svelte-asupnh");
+    			add_location(h30, file, 136, 8, 2419);
+    			attr_dev(p0, "class", "svelte-asupnh");
+    			add_location(p0, file, 137, 8, 2472);
     			attr_dev(a, "href", "#");
-    			attr_dev(a, "class", "svelte-1zhfcn");
-    			add_location(a, file, 114, 2, 2045);
-    			attr_dev(div2, "class", "info svelte-1zhfcn");
-    			add_location(div2, file, 107, 6, 1792);
-    			attr_dev(div3, "class", "banner svelte-1zhfcn");
-    			add_location(div3, file, 101, 4, 1671);
-    			attr_dev(div4, "class", "container svelte-1zhfcn");
-    			add_location(div4, file, 100, 2, 1643);
+    			attr_dev(a, "class", "svelte-asupnh");
+    			add_location(a, file, 140, 2, 2657);
+    			attr_dev(div2, "class", "info svelte-asupnh");
+    			add_location(div2, file, 134, 6, 2361);
+    			attr_dev(div3, "class", "banner svelte-asupnh");
+    			add_location(div3, file, 127, 4, 2194);
+    			attr_dev(div4, "class", "container svelte-asupnh");
+    			add_location(div4, file, 126, 2, 2166);
     			attr_dev(section0, "id", "name");
-    			attr_dev(section0, "class", "svelte-1zhfcn");
-    			add_location(section0, file, 99, 0, 1621);
-    			add_location(h51, file, 125, 10, 2258);
-    			add_location(h31, file, 126, 10, 2286);
-    			add_location(p1, file, 127, 10, 2341);
-    			attr_dev(div5, "class", "column svelte-1zhfcn");
-    			add_location(div5, file, 123, 6, 2218);
-    			add_location(h52, file, 135, 10, 2555);
-    			add_location(h32, file, 136, 10, 2583);
-    			add_location(p2, file, 137, 10, 2638);
-    			attr_dev(div6, "class", "column svelte-1zhfcn");
-    			add_location(div6, file, 133, 6, 2515);
-    			attr_dev(div7, "class", "row svelte-1zhfcn");
-    			add_location(div7, file, 122, 4, 2194);
-    			attr_dev(div8, "class", "container svelte-1zhfcn");
-    			add_location(div8, file, 121, 2, 2166);
+    			attr_dev(section0, "class", "svelte-asupnh");
+    			add_location(section0, file, 125, 0, 2144);
+    			attr_dev(h51, "class", "svelte-asupnh");
+    			add_location(h51, file, 150, 10, 2866);
+    			attr_dev(h31, "class", "svelte-asupnh");
+    			add_location(h31, file, 151, 10, 2894);
+    			attr_dev(p1, "class", "svelte-asupnh");
+    			add_location(p1, file, 152, 10, 2949);
+    			attr_dev(div5, "class", "column svelte-asupnh");
+    			add_location(div5, file, 148, 6, 2826);
+    			attr_dev(h52, "class", "svelte-asupnh");
+    			add_location(h52, file, 160, 10, 3163);
+    			attr_dev(h32, "class", "svelte-asupnh");
+    			add_location(h32, file, 161, 10, 3191);
+    			attr_dev(p2, "class", "svelte-asupnh");
+    			add_location(p2, file, 162, 10, 3246);
+    			attr_dev(div6, "class", "column svelte-asupnh");
+    			add_location(div6, file, 158, 6, 3123);
+    			attr_dev(div7, "class", "row svelte-asupnh");
+    			add_location(div7, file, 147, 4, 2802);
+    			attr_dev(div8, "class", "container svelte-asupnh");
+    			add_location(div8, file, 146, 2, 2774);
     			attr_dev(section1, "id", "contactus");
-    			attr_dev(section1, "class", "bg-gray svelte-1zhfcn");
-    			add_location(section1, file, 120, 0, 2123);
+    			attr_dev(section1, "class", "bg-gray svelte-asupnh");
+    			add_location(section1, file, 145, 0, 2731);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
-    		m: function mount(target, anchor) {
+    		m: function mount(target, anchor, remount) {
     			insert_dev(target, div0, anchor);
     			append_dev(div0, ul);
     			append_dev(ul, li0);
@@ -485,17 +512,17 @@ var app = (function () {
     			append_dev(ul, li2);
     			append_dev(li2, b2);
     			insert_dev(target, t5, anchor);
-    			insert_dev(target, img, anchor);
-    			insert_dev(target, t6, anchor);
     			insert_dev(target, section0, anchor);
     			append_dev(section0, div4);
     			append_dev(div4, div3);
     			append_dev(div3, div1);
     			append_dev(div1, h10);
-    			append_dev(div1, t8);
+    			append_dev(div1, t7);
     			append_dev(div1, h11);
-    			append_dev(div1, t10);
+    			append_dev(div1, t9);
     			append_dev(div1, hr);
+    			append_dev(div3, t10);
+    			append_dev(div3, img);
     			append_dev(div3, t11);
     			append_dev(div3, div2);
     			append_dev(div2, h50);
@@ -522,6 +549,13 @@ var app = (function () {
     			append_dev(div6, h32);
     			append_dev(div6, t29);
     			append_dev(div6, p2);
+    			if (remount) run_all(dispose);
+
+    			dispose = [
+    				listen_dev(li0, "click", /*toggleActive*/ ctx[0], false, false, false),
+    				listen_dev(li1, "click", /*toggleActive*/ ctx[0], false, false, false),
+    				listen_dev(li2, "click", /*toggleActive*/ ctx[0], false, false, false)
+    			];
     		},
     		p: noop,
     		i: noop,
@@ -529,11 +563,10 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div0);
     			if (detaching) detach_dev(t5);
-    			if (detaching) detach_dev(img);
-    			if (detaching) detach_dev(t6);
     			if (detaching) detach_dev(section0);
     			if (detaching) detach_dev(t19);
     			if (detaching) detach_dev(section1);
+    			run_all(dispose);
     		}
     	};
 
@@ -548,7 +581,14 @@ var app = (function () {
     	return block;
     }
 
-    function instance($$self, $$props) {
+    function instance($$self, $$props, $$invalidate) {
+    	const toggleActive = () => {
+    		let activeElements = document.getElementsByClassName("active");
+    		activeElements[0].classList.remove("active");
+    		let element = event.path[1];
+    		element.classList.add("active");
+    	};
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -557,7 +597,8 @@ var app = (function () {
 
     	let { $$slots = {}, $$scope } = $$props;
     	validate_slots("App", $$slots, []);
-    	return [];
+    	$$self.$capture_state = () => ({ toggleActive });
+    	return [toggleActive];
     }
 
     class App extends SvelteComponentDev {
